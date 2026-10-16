@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NEO-TACTILE Control Center widget: header + 3 rows of 4 tiles. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="4">
+
+    <ImageView
+        android:id="@+id/neo_cc_header"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <ImageView android:id="@+id/neo_cc_0_0" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_0_1" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_0_2" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_0_3" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <ImageView android:id="@+id/neo_cc_1_0" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_1_1" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_1_2" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_1_3" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:weightSum="4">
+
+        <ImageView android:id="@+id/neo_cc_2_0" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_2_1" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_2_2" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+        <ImageView android:id="@+id/neo_cc_2_3" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:scaleType="fitXY" />
+    </LinearLayout>
+
+</LinearLayout>

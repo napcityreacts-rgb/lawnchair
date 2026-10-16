@@ -1087,4 +1087,21 @@
     <string name="import_ui_preview_counts">Home items: %1$d · Control-center tiles: %2$d · App-wheel apps: %3$d</string>
     <string name="import_ui_applied">Applied:</string>
     <string name="import_ui_pending">Still to wire (saved in the spec, not faked):</string>
+
+    <!-- NEO-TACTILE widgets + Control Center overlay -->
+    <string name="neo_control_center">Control Center</string>
+    <string name="neo_open_control_center">Open Control Center</string>
+    <string name="neo_open_control_center_desc">Open the NEO-TACTILE Control Center overlay (tiles from the last imported UI, or the built-in defaults).</string>
+    <string name="neo_cc_builtin">Built-in NEO-TACTILE defaults</string>
+    <string name="neo_cc_close">Close</string>
+    <string name="neo_cc_gesture_todo">Swipe-down gesture to open this from anywhere: coming soon.</string>
+    <string name="neo_cc_camera_permission_needed">Camera permission is needed for the torch.</string>
+    <string name="neo_clock_label">NEO Clock</string>
+    <string name="neo_clock_description">NEO-TACTILE editorial clock. Huge time, crimson accent. Tap opens Clock.</string>
+    <string name="neo_glass_label">NEO Glass Panel</string>
+    <string name="neo_glass_description">NEO-TACTILE crimson glass clock panel. Tap opens Clock.</string>
+    <string name="neo_control_label">NEO Control Center</string>
+    <string name="neo_control_description">NEO-TACTILE control center: header clock + 12 tiles (WiFi, Bluetooth, Airplane, DND, Torch, Rotate, Camera, Timer, Messages, Music, Maps, Settings). Header opens the overlay.</string>
+    <string name="neo_wheel_label">NEO App Wheel</string>
+    <string name="neo_wheel_description">NEO-TACTILE quick launch: Phone, Messages, Camera, Browser on beige glass.</string>
 </resources>

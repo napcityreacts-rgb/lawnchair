@@ -5,8 +5,9 @@ Fork of [Lawnchair](https://github.com/LawnchairLauncher/lawnchair) (16-dev, bas
 pack instead of hand-theming the launcher.
 
 > Status: source only, **not tested on a phone**. The theme + wallpaper path is wired
-> to real Lawnchair APIs. Home-screen placement and the control-center / app-wheel
-> screens are explicit TODOs — the importer reports them as pending, it does not fake
+> to real Lawnchair APIs. Increment 2 adds the four NEO-TACTILE widgets and the
+> Control Center overlay. Home-screen placement and the app-wheel screen are
+> explicit TODOs — the importer reports them as pending, it does not fake
 > them. No CI run was verified for this branch.
 
 ## How to use
@@ -77,6 +78,9 @@ Field notes:
 - `controlCenter.tiles[]` `action` keys: `wifi`, `bluetooth`, `airplane`, `dnd`,
   `flashlight`, `rotate`, `camera`, `timer`, `messages`, `music`, `maps`, `settings`.
   `style`: `"plush"` (ink-noir tile) or `"glass"` (beige-glass tile).
+- Widget note: the Control Center *widget* renders exactly 12 tiles; a spec with
+  a different tile count falls back to the built-in defaults in the widget.
+  The overlay activity renders any tile count.
 - `appWheel.apps[]` are apps the wheel launches by `package`.
 
 ## Files added (all under `lawnchair/src/app/lawnchair/neoimport/`)
@@ -87,6 +91,21 @@ Field notes:
 | `NeoUiFile.kt` | Reads a `.neoui.zip` from a content `Uri` into `UiSpec` + asset bytes. |
 | `UiImporter.kt` | Applies a spec (see wiring below). Reports applied vs pending. |
 | `ImportUiActivity.kt` | The picker → preview → apply screen (Compose, `LawnchairTheme`). |
+| `NeoControlCenterActivity.kt` | **Increment 2.** The Control Center overlay: tiles from the imported spec or built-in NEO-TACTILE defaults, rendered as bitmap tiles (Compose `Image`), every tile mapped to a real action. Torch requests CAMERA permission when needed. |
+| `widgets/NeoWidgetRenderer.kt` | **Increment 2.** Canvas bitmap renderer for all four widget faces (NEO clock, NEO glass clock, control-center tiles/header, wheel header) + line icons. |
+| `widgets/NeoWidgetState.kt` | **Increment 2.** Real toggle state (WiFi / BT / DND / torch / airplane / rotation) + the intent set. WiFi/BT/airplane/rotation open system panels — Android does not let apps flip them. |
+| `widgets/NeoWidgetClickReceiver.kt` | **Increment 2.** Handles widget tile taps; torch toggle (opens the overlay to request CAMERA permission when missing). |
+| `widgets/NeoWidgetUpdater.kt` + `NeoWidgetTickReceiver.kt` | **Increment 2.** 1-minute tick redraws all NEO widget instances. |
+| `widgets/NeoClockWidget.kt` | **Increment 2.** NEO editorial clock widget. |
+| `widgets/NeoGlassWidget.kt` | **Increment 2.** NEO crimson glass clock widget. |
+| `widgets/NeoControlCenterWidget.kt` | **Increment 2.** Control Center widget: header (opens the overlay) + 12 tiles from the imported spec or defaults. |
+| `widgets/NeoAppWheelWidget.kt` | **Increment 2.** App Wheel widget: header + 2×2 quick-launch glass tiles (Phone, Messages, Camera, Browser). Quick-launch slice only — the full wheel screen is still TODO. |
+
+Widget resources: `lawnchair/res/layout/neo_widget_single.xml`, `neo_widget_cc.xml`,
+`neo_widget_wheel.xml`; `lawnchair/res/xml/neo_clock_info.xml`, `neo_glass_info.xml`,
+`neo_control_info.xml`, `neo_wheel_info.xml`. Widget labels/descriptions in
+`lawnchair/res/values/strings.xml` (`neo_*`). Manifest: CAMERA permission (torch),
+overlay activity, four widget receivers, click + tick receivers.
 
 ## Wiring points (exact files/functions)
 
@@ -107,8 +126,14 @@ Field notes:
 
 **Wired:** spec parsing, zip reading, accent/hotseat/drawer colors, color style, wallpaper,
 spec persistence, preview + apply UI, applied-vs-pending reporting.
+**Increment 2 (both routes — native port + import spec):** the four NEO-TACTILE
+widgets (port of the standalone `com.neotactile.app` scaffold's widget set into the
+fork, rendered with the proven bitmap-tile pattern), the Control Center overlay
+activity (spec tiles or built-in defaults, real actions), Settings → Open Control
+Center entry, widget header → overlay, torch permission flow. The importer now
+reports control-center tiles as applied.
 
-**TODO (explicitly marked in `UiImporter.kt`, nothing faked):**
+**TODO (explicitly marked in code, nothing faked):**
 
 1. **Home-screen / dock placement** — `UiImporter.applyHomeScreenItems()`.
    Needs: write Favorites rows for each `HomeItem` into the launcher DB and reload the
@@ -118,16 +143,18 @@ spec persistence, preview + apply UI, applied-vs-pending reporting.
    Either build a partial-DB restore in that style, or insert via the model writer and
    call `LauncherAppState.getInstance(context).model.reloadIfActive()`. Every placed
    item must resolve to a real installed package/class.
-2. **Control-center overlay + app-wheel screens** — `UiImporter.applyControlCenterAndWheel()`.
-   Lawnchair has no such surfaces today, so these are NEW screens (bottom-sheet /
-   overlay activity) that read the persisted spec via `UiImporter.readImportedSpec()`
-   and render the tiles / wheel apps. Action keys must map to real intents (same set
-   Nappy Widgets already implements: WiFi panel, Bluetooth settings, DND, flashlight,
-   camera, timer, messages, music, maps, settings) — never a dead button.
-3. **Grid + darkMode from spec** — `grid` and `theme.darkMode` are parsed and stored
+2. **App-wheel screen (drawer replacement)** — `UiImporter.applyControlCenterAndWheel()`.
+   Lawnchair has no radial app wheel today, so this is a NEW screen (bottom-sheet /
+   overlay activity) that reads the persisted spec via `UiImporter.readImportedSpec()`
+   and renders the wheel apps. The `NeoAppWheelWidget` covers only the quick-launch
+   slice. Action keys must map to real intents — never a dead button.
+3. **Swipe-down gesture hook** — open `NeoControlCenterActivity` from a swipe-down
+   gesture on the home screen. Today it opens only from Settings and the widget
+   header. Needs a gesture hook in Lawnchair's touch handling — not faked.
+4. **Grid + darkMode from spec** — `grid` and `theme.darkMode` are parsed and stored
    but not applied. Grid maps to `DeviceGridState` (`com.android.launcher3.model.DeviceGridState`,
    see `LawnchairBackup.restore()`); dark mode maps to Lawnchair's theme setting.
-4. **On-phone verification** — nothing here has run on a device yet.
+5. **On-phone verification** — nothing here has run on a device yet.
 
 ## Build
 

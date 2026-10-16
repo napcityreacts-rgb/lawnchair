@@ -39,6 +39,8 @@
     <uses-permission android:name="android.permission.STATUS_BAR_SERVICE" tools:ignore="ProtectedPermissions"/>
     <uses-permission android:name="android.permission.SUSPEND_APPS" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <!-- NEO torch toggle (CameraManager.setTorchMode) — requested at runtime. -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- Support non-cellular enabled devices -->
     <uses-feature android:name="android.hardware.telephony" android:required="false" />
@@ -130,6 +132,74 @@
             android:name="app.lawnchair.neoimport.ImportUiActivity"
             android:exported="false"
             android:theme="@style/Theme.Lawnchair" />
+
+        <!-- NEO Control Center overlay: tiles from the imported spec or the
+             built-in NEO-TACTILE defaults. Launched from Settings and from the
+             Control Center widget header. -->
+        <activity
+            android:name="app.lawnchair.neoimport.NeoControlCenterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Lawnchair" />
+
+        <!-- NEO-TACTILE widgets (port of the standalone NEO-TACTILE scaffold's
+             four widgets into the fork). exported=true so any launcher's widget
+             picker can add them, like any other app widget. -->
+        <receiver
+            android:name="app.lawnchair.neoimport.widgets.NeoClockWidget"
+            android:exported="true"
+            android:label="@string/neo_clock_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/neo_clock_info" />
+        </receiver>
+
+        <receiver
+            android:name="app.lawnchair.neoimport.widgets.NeoGlassWidget"
+            android:exported="true"
+            android:label="@string/neo_glass_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/neo_glass_info" />
+        </receiver>
+
+        <receiver
+            android:name="app.lawnchair.neoimport.widgets.NeoControlCenterWidget"
+            android:exported="true"
+            android:label="@string/neo_control_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/neo_control_info" />
+        </receiver>
+
+        <receiver
+            android:name="app.lawnchair.neoimport.widgets.NeoAppWheelWidget"
+            android:exported="true"
+            android:label="@string/neo_wheel_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/neo_wheel_info" />
+        </receiver>
+
+        <!-- NEO widget internals: explicit intents only. -->
+        <receiver
+            android:name="app.lawnchair.neoimport.widgets.NeoWidgetClickReceiver"
+            android:exported="true" />
+
+        <receiver
+            android:name="app.lawnchair.neoimport.widgets.NeoWidgetTickReceiver"
+            android:exported="false" />
 
         <activity
             android:name="app.lawnchair.smartspace.SmartspacePreferencesShortcut"

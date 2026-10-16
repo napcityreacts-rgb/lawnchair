@@ -41,10 +41,16 @@ import kotlinx.coroutines.withContext
  *    key "last_spec") so follow-up screens (control-center overlay, app wheel) can
  *    read the imported spec without re-picking the file.
  *
+ * WIRED (increment 2):
+ *  - Control-center overlay: [NeoControlCenterActivity] renders the spec's
+ *    tiles (or the built-in NEO-TACTILE defaults), opened from Settings →
+ *    Open Control Center and from the Control Center widget header. The
+ *    swipe-down gesture hook is still TODO.
+ *
  * NOT WIRED YET (explicit TODOs — nothing is faked):
  *  - Home-screen / dock item placement: see [applyHomeScreenItems].
- *  - Control-center overlay + app-wheel screens: see [applyControlCenterAndWheel].
- *    The spec for both is persisted, so those screens only need to be built and
+ *  - App-wheel screen (drawer replacement): see [applyControlCenterAndWheel].
+ *    The spec for it is persisted, so the screen only needs to be built and
  *    read it back via [readImportedSpec].
  */
 object UiImporter {
@@ -126,11 +132,16 @@ object UiImporter {
             .apply()
         applied += "Saved UI spec \"${spec.name}\" for control center + app wheel"
 
+        // ---- Control center: built (increment 2) — report as applied ----
+        if (spec.controlCenter.tiles.isNotEmpty()) {
+            applied += "Control center (${spec.controlCenter.tiles.size} tiles) — built: open from Settings → Open Control Center or the Control Center widget"
+        }
+
         // ---- TODOs (recorded, not faked) ----
         if (spec.homeScreen.isNotEmpty() || spec.dock.isNotEmpty()) {
             pending += applyHomeScreenItems(appContext, spec)
         }
-        if (spec.controlCenter.tiles.isNotEmpty() || spec.appWheel.apps.isNotEmpty()) {
+        if (spec.appWheel.apps.isNotEmpty()) {
             pending += applyControlCenterAndWheel(appContext, spec)
         }
 
@@ -165,23 +176,23 @@ object UiImporter {
     }
 
     /**
-     * TODO — control-center overlay + app-wheel screens.
+     * TODO — app-wheel screen (drawer replacement).
      *
-     * What it needs: Lawnchair has no control-center overlay or radial app wheel
-     * today, so these are NEW screens, not a re-skin. Build them as a bottom-sheet /
-     * overlay activity that reads the persisted spec via [readImportedSpec] and
-     * renders [ControlTile]s (icon key + label + action key) and [WheelApp]s.
-     * Action keys must map to real intents (wifi panel, bluetooth settings, DND,
-     * flashlight, camera, timer, messages, music, maps, settings) — the same set
-     * Nappy Widgets already implements — never a dead button.
+     * What it needs: Lawnchair has no radial app wheel today, so this is a NEW
+     * screen, not a re-skin. Build it as a bottom-sheet / overlay activity that
+     * reads the persisted spec via [readImportedSpec] and renders [WheelApp]s
+     * (launch by package). The quick-launch slice already exists as the
+     * NeoAppWheelWidget (Phone / Messages / Camera / Browser) — the full wheel
+     * screen replaces / augments the app drawer. Action keys must map to real
+     * intents — never a dead button.
+     *
+     * (The control-center overlay is BUILT — see NeoControlCenterActivity —
+     * so it no longer reports here.)
      */
     private fun applyControlCenterAndWheel(context: Context, spec: UiSpec): List<String> {
         @Suppress("UNUSED_PARAMETER")
         val unused = context
         val out = mutableListOf<String>()
-        if (spec.controlCenter.tiles.isNotEmpty()) {
-            out += "Control center (${spec.controlCenter.tiles.size} tiles) — TODO: build overlay screen reading the persisted spec"
-        }
         if (spec.appWheel.apps.isNotEmpty()) {
             out += "App wheel (${spec.appWheel.apps.size} apps) — TODO: build wheel screen reading the persisted spec"
         }

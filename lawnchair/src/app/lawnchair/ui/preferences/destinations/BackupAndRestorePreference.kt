@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.lawnchair.backup.ui.restoreBackupOpener
 import app.lawnchair.neoimport.ImportUiActivity
+import app.lawnchair.neoimport.NeoControlCenterActivity
 import app.lawnchair.backup.ui.restoreNovaBackupOpener
 import app.lawnchair.ui.preferences.LocalIsExpandedScreen
 import app.lawnchair.ui.preferences.components.NavigationActionPreference
@@ -51,6 +52,13 @@ fun BackupAndRestorePreference(
                 subtitle = stringResource(R.string.import_ui_description),
                 onClick = {
                     context.startActivity(Intent(context, ImportUiActivity::class.java))
+                },
+            )
+            ClickablePreference(
+                label = stringResource(R.string.neo_open_control_center),
+                subtitle = stringResource(R.string.neo_open_control_center_desc),
+                onClick = {
+                    context.startActivity(Intent(context, NeoControlCenterActivity::class.java))
                 },
             )
         }
