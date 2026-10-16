@@ -1070,4 +1070,21 @@
     <string name="lawnchair_action_failed">Failed to trigger action</string>
 
     <string name="please_wait">Please wait…</string>
+
+    <!-- NEO Import UI (.neoui.zip) -->
+    <string name="import_ui">Import UI</string>
+    <string name="import_ui_description">Apply a .neoui.zip UI pack: theme colors, wallpaper, and the saved spec for control center + app wheel.</string>
+    <string name="import_ui_pick">Pick a .neoui.zip file</string>
+    <string name="import_ui_pick_different">Pick a different file</string>
+    <string name="import_ui_apply">Apply this UI</string>
+    <string name="import_ui_applying">Applying…</string>
+    <string name="import_ui_success">UI imported</string>
+    <string name="import_ui_error">Could not read that file. It must be a .neoui.zip containing ui.json.</string>
+    <string name="import_ui_try_again">Try again</string>
+    <string name="import_ui_preview_name">Pack: %1$s</string>
+    <string name="import_ui_preview_author">Author: %1$s</string>
+    <string name="import_ui_preview_theme">Accent %1$s · Background %2$s</string>
+    <string name="import_ui_preview_counts">Home items: %1$d · Control-center tiles: %2$d · App-wheel apps: %3$d</string>
+    <string name="import_ui_applied">Applied:</string>
+    <string name="import_ui_pending">Still to wire (saved in the spec, not faked):</string>
 </resources>

@@ -124,6 +124,13 @@
             android:name="app.lawnchair.BlankActivity"
             android:theme="@style/Theme.Transparent" />
 
+        <!-- NEO Import UI: picks a .neoui.zip and applies its spec. Launched only
+             from inside the launcher (Settings → Backup & restore → Import UI). -->
+        <activity
+            android:name="app.lawnchair.neoimport.ImportUiActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Lawnchair" />
+
         <activity
             android:name="app.lawnchair.smartspace.SmartspacePreferencesShortcut"
             android:theme="@style/Theme.Transparent" />

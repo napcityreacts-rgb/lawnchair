@@ -1,9 +1,12 @@
 package app.lawnchair.ui.preferences.destinations
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.lawnchair.backup.ui.restoreBackupOpener
+import app.lawnchair.neoimport.ImportUiActivity
 import app.lawnchair.backup.ui.restoreNovaBackupOpener
 import app.lawnchair.ui.preferences.LocalIsExpandedScreen
 import app.lawnchair.ui.preferences.components.NavigationActionPreference
@@ -39,6 +42,16 @@ fun BackupAndRestorePreference(
                 label = stringResource(R.string.restore_nova_backup),
                 subtitle = stringResource(R.string.restore_nova_backup_description),
                 onClick = restoreNovaBackupOpener(),
+            )
+        }
+        PreferenceGroup {
+            val context = LocalContext.current
+            ClickablePreference(
+                label = stringResource(R.string.import_ui),
+                subtitle = stringResource(R.string.import_ui_description),
+                onClick = {
+                    context.startActivity(Intent(context, ImportUiActivity::class.java))
+                },
             )
         }
     }
